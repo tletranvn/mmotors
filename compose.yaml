@@ -1,0 +1,53 @@
+
+services:
+
+  database:
+    image: postgres:17-alpine
+    container_name: mmotors_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+    ports:
+      - "5432:5432"
+
+    # Healthcheck : vérifie que PostgreSQL est prêt à accepter des connexions
+    # Permet à Docker de savoir quand le service est opérationnel
+    healthcheck:
+      # Commande pour tester la disponibilité de PostgreSQL
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
+      # Temps maximum d'attente pour chaque test
+      timeout: 5s
+      # Nombre de tentatives avant de considérer le service comme défaillant
+      retries: 5
+      # Période de démarrage pendant laquelle les échecs sont ignorés
+      start_period: 60s
+
+    # Volumes : persistance des données de la base de données
+    # Sans volume, toutes les données seraient perdues à chaque arrêt du conteneur
+    volumes:
+      # Volume nommé : Docker gère automatiquement le stockage
+      # :rw = read-write (lecture-écriture)
+      - database_data:/var/lib/postgresql/data:rw
+
+    networks:
+      - mmotors_network
+
+
+  # A ajouter: Service PHP-FPM (Backend Symfony)
+
+  # A ajouter: Service Nginx (Serveur web)
+
+  # A ajouter: Service Node.js (Frontend React)
+
+
+# Définition des volumes nommés
+# Docker créera et gérera automatiquement ces volumes
+volumes:
+  # Volume pour stocker les données PostgreSQL de manière persistante
+  # Les données survivront aux redémarrages et suppressions de conteneurs
+  database_data:
+
+networks:
+  mmotors_network:
+    driver: bridge
