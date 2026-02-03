@@ -4,7 +4,7 @@ docs-perso/
 # ENVIRONNEMENT & SECRETS
 .env
 .env.*
-!.env.example
+.env.example
 !.env.test
 *.pem
 *.key
