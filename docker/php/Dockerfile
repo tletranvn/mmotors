@@ -21,6 +21,12 @@ RUN docker-php-ext-install \
     opcache \
     mbstring
 
+# Installation de PCOV (driver de couverture de code pour PHPUnit)
+# PCOV est plus rapide que Xdebug car il ne fait QUE la couverture
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install pcov \
+    && docker-php-ext-enable pcov
+
 # Installation de Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer 
 
