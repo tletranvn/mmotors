@@ -1,0 +1,26 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    # Niveau 8 = le plus strict (0-8)
+    # Detecte : types manquants, null potentiels, mixed, etc.
+    level: 8
+
+    # Dossiers a analyser
+    paths:
+        - src
+
+    # Fichiers/dossiers a exclure
+    excludePaths:
+        - src/Kernel.php
+
+    # Parametres Symfony
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+
+    # Ignorer certaines erreurs connues (a utiliser avec parcimonie)
+    # ignoreErrors:
+    #     - '#Call to an undefined method#'
+
+    # Traiter les erreurs comme des warnings (utile au debut)
+    # reportUnmatchedIgnoredErrors: false
