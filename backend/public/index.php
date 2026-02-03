@@ -1,9 +1,9 @@
 <?php
-// Ce fichier sera remplace par Symfony dans la phase suivante.
-// Il sert uniquement a verifier que PHP-FPM et Nginx fonctionnent.
 
+use App\Kernel;
 
-echo "M-Motors Backend - PHP fonctionne !";
-echo "\n\nPHP Version: " . phpversion();
-echo "\n\nExtensions chargees:";
-print_r(get_loaded_extensions());
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+
+return function (array $context) {
+    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+};
