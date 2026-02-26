@@ -26,6 +26,7 @@ docs/
 /frontend/dist/
 /frontend/build/
 /frontend/coverage/
+/frontend/.vite/
 /frontend/.env.local
 /frontend/.env.*.local
 
