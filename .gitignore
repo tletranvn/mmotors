@@ -1,5 +1,6 @@
 # DOCUMENTATION PERSO
 docs-perso/
+docs/
 
 # ENVIRONNEMENT & SECRETS
 .env
