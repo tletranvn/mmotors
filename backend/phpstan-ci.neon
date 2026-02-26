@@ -1,0 +1,18 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    # Meme niveau que phpstan.neon (le plus strict)
+    level: 8
+
+    paths:
+        - src
+
+    excludePaths:
+        - src/Kernel.php
+
+    # Note CI : containerXmlPath absent intentionnellement.
+    # En local (phpstan.neon), on utilise le cache Symfony genere par "cache:warmup".
+    # En CI, on n'a pas de cache Symfony pre-construit.
+    # Consequence : l'inference de types des services Symfony est desactivee en CI,
+    # mais toutes les autres verifications (types PHP, null safety, etc.) restent actives.

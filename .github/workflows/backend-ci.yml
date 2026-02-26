@@ -1,0 +1,115 @@
+name: Backend CI
+
+# Declencheurs : push sur main/dev OU pull request vers main
+# paths: execute UNIQUEMENT si des fichiers backend/* sont modifies
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend/**'
+
+jobs:
+
+  # JOB 1 : Analyse statique PHPStan
+  # But : detecter les erreurs de type sans executer le code
+
+  phpstan:
+    name: PHPStan (Level 8)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_pgsql, zip, intl, mbstring
+
+      # Cache vendor/ pour accelerer les prochains runs
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      # phpstan-ci.neon = version sans containerXmlPath (pas de cache Symfony en CI)
+      - name: Run PHPStan
+        working-directory: backend
+        run: ./vendor/bin/phpstan analyse --no-ansi --configuration phpstan-ci.neon
+
+
+  # JOB 2 : Tests PHPUnit avec couverture de code
+  # But : executer les tests et verifier la couverture >= 80%
+
+  phpunit:
+    name: PHPUnit Tests
+    runs-on: ubuntu-latest
+
+    # Service PostgreSQL pour les tests d'integration
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: mmotors_test
+          POSTGRES_USER: mmotors
+          POSTGRES_PASSWORD: mmotors_test_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    # Variables d'environnement pour Symfony en mode test
+    env:
+      DATABASE_URL: postgresql://mmotors:mmotors_test_password@localhost:5432/mmotors_test?serverVersion=17&charset=utf8
+      APP_ENV: test
+      APP_SECRET: ci_test_secret_not_used_in_production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3 with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo, pdo_pgsql, zip, intl, mbstring, pcov
+          # PCOV = driver de couverture (plus rapide que Xdebug)
+          coverage: pcov
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: backend/vendor
+          key: composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      # Creer le schema de base de donnees test
+      - name: Setup test database
+        working-directory: backend
+        run: |
+          php bin/console doctrine:database:create --env=test --if-not-exists
+          php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+      # --coverage-text : affiche le rapport dans les logs GitHub Actions
+      - name: Run PHPUnit with coverage
+        working-directory: backend
+        run: php bin/phpunit --coverage-text

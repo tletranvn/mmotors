@@ -1,0 +1,56 @@
+name: Frontend CI
+
+# Declencheurs : push sur main/dev OU pull request vers main
+# paths: execute UNIQUEMENT si des fichiers frontend/* sont modifies
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+
+jobs:
+
+  # JOB : Lint + TypeScript + Tests avec couverture
+  # But : verifier la qualite du code et executer les tests
+
+  lint-and-test:
+    name: Lint, TypeScript & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          # Cache npm base sur package-lock.json
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      # npm ci = installation propre depuis package-lock.json (plus rapide que npm install)
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      # ESLint : verifier les regles de style et les erreurs potentielles
+      - name: Run ESLint
+        working-directory: frontend
+        run: npm run lint
+
+      # TypeScript : verifier les types sans compiler (--noEmit)
+      - name: TypeScript check
+        working-directory: frontend
+        run: npx tsc --noEmit
+
+      # Vitest : executer les tests avec rapport de couverture
+      # Echoue si la couverture est inferieure a 80% (configure dans vite.config.ts)
+      - name: Run tests with coverage
+        working-directory: frontend
+        run: npm run test:coverage
