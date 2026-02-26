@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Husky pre-commit hook - M-Motors
+#
+# Ce hook s'execute automatiquement avant chaque "git commit".
+# Il verifie la qualite du code frontend via le container Docker.
+#
+# IMPORTANT : le container "node" doit etre demarre (docker compose up -d node).
+# Si Docker n'est pas actif, les verifications sont ignorees (avec avertissement).
+#
+
+echo "Pre-commit: verifications frontend en cours..."
+
+# Verifier si le container node est actif
+if ! docker compose exec -T node echo "ok" > /dev/null 2>&1; then
+  echo ""
+  echo "AVERTISSEMENT : container 'node' non actif."
+  echo "  Les verifications ESLint et TypeScript sont ignorees."
+  echo "  Lancez 'docker compose up -d node' pour les activer."
+  echo ""
+  exit 0
+fi
+
+# ESLint : verifier les erreurs de style et de syntaxe
+echo "  -> ESLint..."
+docker compose exec -T node npm run lint
+if [ $? -ne 0 ]; then
+  echo "ECHEC : ESLint a detecte des erreurs. Corrigez-les avant de commiter."
+  exit 1
+fi
+
+# TypeScript : verifier les types
+echo "  -> TypeScript check..."
+docker compose exec -T node npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "ECHEC : TypeScript a detecte des erreurs de type. Corrigez-les avant de commiter."
+  exit 1
+fi
+
+echo "Pre-commit valide. Commit en cours..."
