@@ -1,6 +1,6 @@
 # Image de base
 
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Installation des outils necessaires
 
