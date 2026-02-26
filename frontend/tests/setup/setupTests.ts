@@ -1,0 +1,3 @@
+// Importe les matchers custom de jest-dom pour tous les tests
+// Exemples : toBeInTheDocument(), toHaveClass(), toBeDisabled()...
+import '@testing-library/jest-dom'
