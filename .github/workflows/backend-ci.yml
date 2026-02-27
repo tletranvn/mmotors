@@ -106,16 +106,41 @@ jobs:
           key: composer-${{ hashFiles('backend/composer.lock') }}
           restore-keys: composer-
 
-      # .env est dans .gitignore → absent en CI
-      # Symfony (via bin/console cache:clear dans post-install-cmd) requiert ce fichier
-      # pour demarrer, meme si APP_ENV est deja defini comme variable d'environnement.
-      # Solution : creer un .env minimal a partir des GitHub Secrets avant composer install.
+      # .env est dans .gitignore → absent en CI.
+      # Symfony requiert ce fichier au demarrage meme si les vars sont deja dans l'env reel.
+      # On y met TOUTES les variables referencees dans config/packages/*.yaml :
+      #   - routing.yaml        → DEFAULT_URI
+      #   - nelmio_cors.yaml    → CORS_ALLOW_ORIGIN
+      #   - lexik_jwt_*.yaml    → JWT_SECRET_KEY (chemin), JWT_PUBLIC_KEY (chemin), JWT_PASSPHRASE
+      #
+      # Regles de classification :
+      #   GitHub Secrets (${{ secrets.* }}) : APP_SECRET, DATABASE_URL, JWT_PASSPHRASE (passphrases/passwords)
+      #   Valeurs en clair : DEFAULT_URI, CORS_ALLOW_ORIGIN, chemins de fichiers JWT (pas sensibles)
       - name: Create .env file for CI
         working-directory: backend
         run: |
           echo "APP_ENV=test" > .env
           echo "APP_SECRET=${{ secrets.CI_APP_SECRET }}" >> .env
           echo "DATABASE_URL=${{ secrets.CI_DATABASE_URL }}" >> .env
+          echo "DEFAULT_URI=http://localhost" >> .env
+          echo "CORS_ALLOW_ORIGIN='^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'" >> .env
+          echo "JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem" >> .env
+          echo "JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem" >> .env
+          echo "JWT_PASSPHRASE=${{ secrets.CI_JWT_PASSPHRASE }}" >> .env
+
+      # Le bundle lexik/jwt utilise resolve:JWT_SECRET_KEY qui lit physiquement le fichier PEM.
+      # Les cles JWT sont dans .gitignore → absentes en CI.
+      # Solution : generer des cles RSA temporaires (throw-away, uniquement pour le job CI).
+      # Ces cles n'ont aucune valeur en dehors du job : elles sont regenerees a chaque run.
+      - name: Generate JWT keys for CI
+        working-directory: backend
+        run: |
+          mkdir -p config/jwt
+          openssl genrsa -passout pass:${{ secrets.CI_JWT_PASSPHRASE }} \
+            -out config/jwt/private.pem 2048
+          openssl rsa -passin pass:${{ secrets.CI_JWT_PASSPHRASE }} \
+            -in config/jwt/private.pem -pubout \
+            -out config/jwt/public.pem
 
       - name: Install Composer dependencies
         working-directory: backend
