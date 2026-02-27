@@ -1,0 +1,119 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Home > rend la page sans erreur (snapshot) 1`] = `
+<div>
+  <main>
+    <section
+      aria-label="Présentation principale"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 flex flex-col items-center text-center gap-6"
+    >
+      <h1
+        class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight"
+      >
+        Trouvez votre véhicule idéal
+      </h1>
+      <p
+        class="text-white/60 text-lg sm:text-xl max-w-2xl"
+      >
+        Achat ou location longue durée — M-Motors vous propose une sélection de véhicules de qualité, avec un accompagnement personnalisé.
+      </p>
+      <a
+        class="bg-primary text-background font-semibold px-8 py-3 rounded hover:opacity-90 transition-opacity text-base"
+        data-discover="true"
+        href="/vehicles"
+      >
+        Découvrir nos véhicules
+      </a>
+    </section>
+    <section
+      aria-label="Nos avantages"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+    >
+      <h2
+        class="text-2xl font-extrabold text-white text-center mb-12"
+      >
+        Pourquoi choisir M-Motors ?
+      </h2>
+      <ul
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0"
+      >
+        <li
+          class="bg-surface rounded-lg p-6 flex flex-col gap-3 border border-white/10"
+        >
+          <h3
+            class="text-white font-semibold text-base"
+          >
+            Garantie qualité
+          </h3>
+          <p
+            class="text-white/50 text-sm leading-relaxed"
+          >
+            Tous nos véhicules sont contrôlés et certifiés avant mise en vente.
+          </p>
+        </li>
+        <li
+          class="bg-surface rounded-lg p-6 flex flex-col gap-3 border border-white/10"
+        >
+          <h3
+            class="text-white font-semibold text-base"
+          >
+            Service après-vente
+          </h3>
+          <p
+            class="text-white/50 text-sm leading-relaxed"
+          >
+            Une équipe dédiée pour vous accompagner après votre achat ou location.
+          </p>
+        </li>
+        <li
+          class="bg-surface rounded-lg p-6 flex flex-col gap-3 border border-white/10"
+        >
+          <h3
+            class="text-white font-semibold text-base"
+          >
+            Financement
+          </h3>
+          <p
+            class="text-white/50 text-sm leading-relaxed"
+          >
+            Des solutions de financement adaptées à tous les profils.
+          </p>
+        </li>
+        <li
+          class="bg-surface rounded-lg p-6 flex flex-col gap-3 border border-white/10"
+        >
+          <h3
+            class="text-white font-semibold text-base"
+          >
+            Essai gratuit
+          </h3>
+          <p
+            class="text-white/50 text-sm leading-relaxed"
+          >
+            Testez le véhicule de votre choix sans engagement.
+          </p>
+        </li>
+      </ul>
+    </section>
+    <section
+      aria-label="À propos de M-Motors"
+      class="bg-surface py-20"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center gap-6"
+      >
+        <h2
+          class="text-3xl font-extrabold text-white"
+        >
+          M-Motors
+        </h2>
+        <p
+          class="text-white/60 text-base leading-relaxed max-w-3xl"
+        >
+          Depuis plus de 30 ans, M-Motors accompagne plus d'un million de clients dans leurs projets automobiles. Spécialiste de la vente et de la location longue durée, nous mettons à votre disposition une gamme diversifiée de véhicules neufs et d'occasion. Notre mission : vous offrir une expérience d'achat simple, transparente et sécurisée, avec des conseillers disponibles à chaque étape. Que vous souhaitiez acquérir un véhicule ou opter pour une formule LLD flexible, M-Motors est votre partenaire de confiance pour rouler sereinement.
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
+`;
