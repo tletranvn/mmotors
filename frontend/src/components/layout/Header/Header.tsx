@@ -12,7 +12,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="bg-[#0F172A] border-b border-white/10 sticky top-0 z-50">
+    <header className="bg-background border-b border-white/10 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -27,7 +27,7 @@ export default function Header() {
               viewBox="0 0 24 24"
               fill="none"
               aria-hidden="true"
-              className="text-[#22D3EE] group-hover:text-white transition-colors"
+              className="text-primary group-hover:text-white transition-colors"
             >
               <path
                 d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z"
@@ -48,7 +48,7 @@ export default function Header() {
                 className={({ isActive }) =>
                   `text-sm font-medium transition-colors ${
                     isActive
-                      ? 'text-[#22D3EE]'
+                      ? 'text-primary'
                       : 'text-white/70 hover:text-white'
                   }`
                 }
@@ -68,7 +68,7 @@ export default function Header() {
             </Link>
             <Link
               to="/register"
-              className="bg-[#22D3EE] text-[#0F172A] hover:bg-white transition-colors px-4 py-1.5 rounded text-sm font-semibold"
+              className="bg-primary text-background hover:opacity-90 transition-opacity px-4 py-1.5 rounded text-sm font-semibold"
             >
               S'inscrire
             </Link>
@@ -101,7 +101,7 @@ export default function Header() {
                 onClick={() => setMenuOpen(false)}
                 className={({ isActive }) =>
                   `text-sm font-medium py-2 transition-colors ${
-                    isActive ? 'text-[#22D3EE]' : 'text-white/70 hover:text-white'
+                    isActive ? 'text-primary' : 'text-white/70 hover:text-white'
                   }`
                 }
               >
@@ -118,7 +118,7 @@ export default function Header() {
             <Link
               to="/register"
               onClick={() => setMenuOpen(false)}
-              className="bg-[#22D3EE] text-[#0F172A] text-center py-2 rounded text-sm font-semibold"
+              className="bg-primary text-background text-center py-2 rounded text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               S'inscrire
             </Link>

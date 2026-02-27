@@ -4,7 +4,7 @@ const year = new Date().getFullYear()
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0F172A] border-t border-white/10 mt-auto">
+    <footer className="bg-background border-t border-white/10 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* À propos */}
@@ -16,7 +16,7 @@ export default function Footer() {
                 viewBox="0 0 24 24"
                 fill="none"
                 aria-hidden="true"
-                className="text-[#22D3EE]"
+                className="text-primary"
               >
                 <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z" fill="currentColor" />
               </svg>
@@ -34,7 +34,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/cgu"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors"
+                  className="text-white/50 hover:text-primary text-sm transition-colors"
                 >
                   CGU
                 </Link>
@@ -42,7 +42,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/mentions-legales"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors"
+                  className="text-white/50 hover:text-primary text-sm transition-colors"
                 >
                   Mentions légales
                 </Link>
@@ -50,7 +50,7 @@ export default function Footer() {
               <li>
                 <Link
                   to="/politique-confidentialite"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors"
+                  className="text-white/50 hover:text-primary text-sm transition-colors"
                 >
                   Politique de confidentialité
                 </Link>
@@ -68,7 +68,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors flex items-center gap-2"
+                  className="text-white/50 hover:text-primary text-sm transition-colors flex items-center gap-2"
                 >
                   {/* Instagram icon */}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -83,7 +83,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors flex items-center gap-2"
+                  className="text-white/50 hover:text-primary text-sm transition-colors flex items-center gap-2"
                 >
                   {/* LinkedIn icon */}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -98,7 +98,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="text-white/50 hover:text-[#22D3EE] text-sm transition-colors flex items-center gap-2"
+                  className="text-white/50 hover:text-primary text-sm transition-colors flex items-center gap-2"
                 >
                   {/* Facebook icon */}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
