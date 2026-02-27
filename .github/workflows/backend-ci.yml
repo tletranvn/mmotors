@@ -146,12 +146,30 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      # Creer le schema de base de donnees test
+      # Creer la base de donnees de test et executer les migrations si elles existent.
+      #
+      # Note sur le nom de la base de donnees :
+      #   doctrine.yaml configure "dbname_suffix: '_test'" pour l'env test.
+      #   → Doctrine ajoute automatiquement "_test" au nom dans DATABASE_URL.
+      #   → Ex: CI_DATABASE_URL contient "mmotors_test" → la vraie DB sera "mmotors_test_test".
+      #   C'est le comportement attendu de Symfony pour isoler les tests.
+      #
+      # Note sur les migrations :
+      #   "doctrine:migrations:migrate" echoue s'il n'y a aucun fichier de migration.
+      #   En Sprint 0 il n'y a pas encore d'entites donc pas de migrations.
+      #   → On verifie si des fichiers .php existent dans migrations/ avant de migrer.
+      #   → A partir de Sprint 1 (creation des entites), les migrations seront presentes.
       - name: Setup test database
         working-directory: backend
         run: |
           php bin/console doctrine:database:create --env=test --if-not-exists
-          php bin/console doctrine:migrations:migrate --env=test --no-interaction
+          MIGRATION_COUNT=$(find migrations -name "*.php" 2>/dev/null | wc -l)
+          if [ "$MIGRATION_COUNT" -gt "0" ]; then
+            echo "Migrations trouvees ($MIGRATION_COUNT fichier(s)) — execution de migrate"
+            php bin/console doctrine:migrations:migrate --env=test --no-interaction
+          else
+            echo "Aucune migration trouvee — schema vide (Sprint 0, pas encore d'entites)"
+          fi
 
       # --coverage-text : affiche le rapport dans les logs GitHub Actions
       - name: Run PHPUnit with coverage
