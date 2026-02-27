@@ -1,27 +1,19 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import App from '../../App'
 
 describe('App', () => {
-  it('affiche le titre Vite + React', () => {
+  it('affiche le header avec le logo M-MOTORS', () => {
     render(<App />)
-    expect(screen.getByText('Vite + React')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /m-motors/i })).toBeInTheDocument()
   })
 
-  it('incremente le compteur au clic', async () => {
-    // userEvent.setup() = prepare la simulation d'evenements navigateur
-    const user = userEvent.setup()
+  it('affiche la navigation principale', () => {
     render(<App />)
+    expect(screen.getByRole('link', { name: /catalogue/i })).toBeInTheDocument()
+  })
 
-    const button = screen.getByRole('button')
-
-    // Avant le clic : compteur = 0
-    expect(button).toHaveTextContent('count is 0')
-
-    // Simuler un clic sur le bouton
-    await user.click(button)
-
-    // Apres le clic : compteur = 1
-    expect(button).toHaveTextContent('count is 1')
+  it('affiche le footer avec le copyright', () => {
+    render(<App />)
+    expect(screen.getByText(/tous droits réservés/i)).toBeInTheDocument()
   })
 })

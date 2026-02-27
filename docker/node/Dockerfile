@@ -19,4 +19,4 @@ EXPOSE 5173
 # Commande par defaut
 # En developpement, on lance le serveur Vite
 # Alternative pour production : CMD ["npm", "run", "build"]
-CMD ["sh", "-c", "tail -f /dev/null"]
+CMD ["sh", "-c", "npm install && npm run dev"]
