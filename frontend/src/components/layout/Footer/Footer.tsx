@@ -60,7 +60,7 @@ export default function Footer() {
 
           {/* Réseaux sociaux */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Réseaux</h3>
+            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Réseaux Sociaux</h3>
             <ul className="flex flex-col gap-2">
               <li>
                 <a
