@@ -1,19 +1,29 @@
 import { Link } from 'react-router-dom'
+import {
+  ShieldCheckIcon,
+  ChatBubbleLeftRightIcon,
+  CreditCardIcon,
+  KeyIcon,
+} from '@heroicons/react/24/outline'
 
 const advantages = [
   {
+    icon: ShieldCheckIcon,
     title: 'Garantie qualité',
     description: 'Tous nos véhicules sont contrôlés et certifiés avant mise en vente.',
   },
   {
+    icon: ChatBubbleLeftRightIcon,
     title: 'Service après-vente',
     description: 'Une équipe dédiée pour vous accompagner après votre achat ou location.',
   },
   {
+    icon: CreditCardIcon,
     title: 'Financement',
     description: 'Des solutions de financement adaptées à tous les profils.',
   },
   {
+    icon: KeyIcon,
     title: 'Essai gratuit',
     description: 'Testez le véhicule de votre choix sans engagement.',
   },
@@ -44,11 +54,12 @@ export default function Home() {
           Pourquoi choisir M-Motors ?
         </h2>
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 list-none p-0">
-          {advantages.map(({ title, description }) => (
+          {advantages.map(({ icon: Icon, title, description }) => (
             <li
               key={title}
               className="bg-surface rounded-lg p-6 flex flex-col gap-3 border border-white/10"
             >
+              <Icon className="w-8 h-8 text-primary" aria-hidden="true" />
               <h3 className="text-white font-semibold text-base">{title}</h3>
               <p className="text-white/50 text-sm leading-relaxed">{description}</p>
             </li>
